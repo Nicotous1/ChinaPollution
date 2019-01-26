@@ -65,7 +65,7 @@ def get_cv(X, y):
 
 
 def _read_data(path, filename):
-    df = pd.read_csv(os.path.join(path, 'data', filename), index_col = 0)
+    df = pd.read_csv(os.path.join(path, 'data', filename))
     df.cbwd = df.cbwd.astype("category")
     df.index = pd.to_datetime(df[["year", "month", "day", "hour"]])
     X, y = df.drop(_target_column_name, axis = 1), df[_target_column_name]
