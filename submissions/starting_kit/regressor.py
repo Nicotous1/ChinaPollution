@@ -1,16 +1,21 @@
 from sklearn.base import BaseEstimator
-import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import make_pipeline
+
+from sklearn import svm
 
 
 class Regressor(BaseEstimator):
     def __init__(self):
-        pass
+        self.reg = make_pipeline(StandardScaler(), svm.SVR())
 
     def fit(self, X, y):
+        self.reg.fit(X, y)
         return self
 
     def predict(self, X):
-        return np.zeros((X.shape[0], 1))
+        return self.reg.predict(X)
 
     def predict_proba(self, X):
-        return np.ones((X.shape[0], 1))
+        return self.reg.predict_proba(X)
