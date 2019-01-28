@@ -1,4 +1,4 @@
-# ChinaPollution
+# Predicting pollution in China
 
 *Authors: Nicolas Toussaint, Alexis Saïr, Robin Fuchs, Ambroise Coulomb, Enzo Terreau, Antoine Hoorelbeke*
 
@@ -21,20 +21,26 @@ Knowing and anticipating the level of PM2.5 in the air is a major public health 
 $ pip install git+https://github.com/paris-saclay-cds/ramp-workflow.git
 ``
 
-2. Follow the ramp-kits instructions from the wiki
-Local notebook
-Get started on this RAMP with the dedicated notebook.
+2. Follow the ramp-kits instructions from the [wiki](https://github.com/paris-saclay-cds/ramp-workflow/wiki) 
 
-## Test
+
+## EDA 
+
+This [notebook](./Exploratory-Data-Analysis.ipynb) is an exploratory analysis of the data available for this challenge. It's a first step to understand the data
+
+## Starting kit
+
+A first model has been designed in this [folder](./submissions/starting_kit). It is composed of a feature extractor that is performing preprocessing of the data and a regressor that is a Ridge regression.
 
 To test the starting kit:  
+
 ``
 $ ramp_test_submission --submission starting_kit
 ``
 
 ## Help
 
-Go to the ramp-workflow wiki for more help on the RAMP ecosystem.
+Go to the [ramp-workflow wiki](https://github.com/paris-saclay-cds/ramp-workflow/wiki) for more help on the RAMP ecosystem.
 
 
 ## References
