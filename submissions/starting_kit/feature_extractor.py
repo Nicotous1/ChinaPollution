@@ -6,6 +6,7 @@ import pandas as pd
 COLUMNS_ROLLING = ['DEWP', 'TEMP', 'PRES']
 COLUMNS_DUMMY = ['cbwd']
 COLUMNS_CYCLIC = ['month', 'day', 'hour']
+ROLLING_WINDOWS = [4, 15]
 
 class FeatureExtractor(BaseEstimator, TransformerMixin):
     def fit(self, X_df, y):
@@ -18,9 +19,10 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         return X_df.astype(np.float).fillna(0)
     
     def compute_rolling(self, X_df):
-        for column in COLUMNS_ROLLING:
-            X_df['rolling_mean_{}'.format(column)] = X_df[column].rolling(6).mean()
-            X_df['rolling_std_{}'.format(column)] = X_df[column].rolling(6).std()
+        for window in ROLLING_WINDOWS:
+            for column in COLUMNS_ROLLING:
+                X_df['rolling_mean_{}'.format(column)] = X_df[column].rolling(window).mean()
+                X_df['rolling_std_{}'.format(column)] = X_df[column].rolling(window).std()
         return X_df
     
     # We encode cyclic values by using trigonometric functions

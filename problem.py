@@ -4,14 +4,12 @@ import pandas as pd
 import rampwf as rw
 import numpy as np
 
+from rampwf.score_types.base import BaseScoreType
+
 from sklearn.model_selection import KFold
-
-
-
-
+from sklearn.metrics import r2_score
 
 problem_title = 'Predicting the pollution of Bejing with the weather'
-
 
 # -----------------------------------------------------------------------------
 # Predictions type
@@ -21,36 +19,34 @@ _target_column_name = 'pm2.5'
 
 Predictions = rw.prediction_types.make_regression()
 
-
 # -----------------------------------------------------------------------------
 # Worklow element
 # -----------------------------------------------------------------------------
 
-
 workflow = rw.workflows.FeatureExtractorRegressor()
-
-
-
 
 # -----------------------------------------------------------------------------
 # Score types
 # -----------------------------------------------------------------------------
 
+class R2(BaseScoreType):
+    def __init__(self, name='r2', precision=2):
+        self.name = name
+        self.precision = precision
+
+    def __call__(self, y_true, y_pred):
+        score = r2_score(y_true, y_pred)
+        return score
+
 
 score_types = [
        rw.score_types.RMSE(),
-       rw.score_types.RelativeRMSE(name='rel_rmse'),
+       R2()
 ]
-
-
-
-
-
 
 # -----------------------------------------------------------------------------
 # Cross-validation scheme
 # -----------------------------------------------------------------------------
-
 
 def get_cv(X, y):
     # using 5 folds as default
@@ -73,8 +69,6 @@ def get_cv(X, y):
                np.hstack([splits[p][1] for p in ps[1]]))
 
 
-
-
 # -----------------------------------------------------------------------------
 # Training / testing data reader
 # -----------------------------------------------------------------------------
@@ -86,9 +80,6 @@ def _read_data(path, filename):
     df.index = pd.to_datetime(df[["year", "month", "day", "hour"]])
     X, y = df.drop(_target_column_name, axis = 1), df[_target_column_name]
     return X, y.values
-
-    
-
 
 def get_train_data(path='.'):
     return _read_data(path, filename = 'train.csv')
