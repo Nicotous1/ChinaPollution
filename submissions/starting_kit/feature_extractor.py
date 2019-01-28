@@ -1,11 +1,32 @@
 from sklearn.base import BaseEstimator
 from sklearn.base import TransformerMixin
 import numpy as np
+import pandas as pd
+
+COLUMNS_ROLLING = ['DEWP', 'TEMP', 'PRES']
+COLUMNS_DUMMY = ['cbwd']
+COLUMNS_CYCLIC = ['month', 'day', 'hour']
 
 class FeatureExtractor(BaseEstimator, TransformerMixin):
     def fit(self, X_df, y):
         return self
 
     def transform(self, X_df):
-        # get only the continuous variable
-        return X_df[["DEWP", "TEMP", "PRES"]].astype(np.float).fillna(0)
+        X_df = pd.get_dummies(X_df, columns=COLUMNS_DUMMY, drop_first=True)
+        X_df = self.compute_rolling(X_df)
+        X_df = self.encode_cyclic_values(X_df)
+        return X_df.astype(np.float).fillna(0)
+    
+    def compute_rolling(self, X_df):
+        for column in COLUMNS_ROLLING:
+            X_df['rolling_mean_{}'.format(column)] = X_df[column].rolling(6).mean()
+            X_df['rolling_std_{}'.format(column)] = X_df[column].rolling(6).std()
+        return X_df
+    
+    # We encode cyclic values by using trigonometric functions
+    def encode_cyclic_values(self, X_df):
+        for column in COLUMNS_CYCLIC:
+            X_df['cos_{}'.format(column)] = np.cos(X_df[column] * 2 * np.pi / X_df[column].max())
+            X_df['sin_{}'.format(column)] = np.sin(X_df[column] * 2 * np.pi / X_df[column].max())
+        X_df.drop(COLUMNS_CYCLIC, inplace=True, axis=1)
+        return X_df
