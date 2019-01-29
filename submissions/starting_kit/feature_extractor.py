@@ -18,6 +18,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         X_df = self.encode_cyclic_values(X_df)
         return X_df.astype(np.float).fillna(0)
     
+    # We compute rolling means and deviations on the "temporal" variables
     def compute_rolling(self, X_df):
         for window in ROLLING_WINDOWS:
             for column in COLUMNS_ROLLING:
