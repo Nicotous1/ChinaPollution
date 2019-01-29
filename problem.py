@@ -7,7 +7,7 @@ import numpy as np
 from rampwf.score_types.base import BaseScoreType
 
 from sklearn.model_selection import KFold
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score, explained_variance_score
 
 problem_title = 'Predicting the pollution of Bejing with the weather'
 
@@ -38,10 +38,19 @@ class R2(BaseScoreType):
         score = r2_score(y_true, y_pred)
         return score
 
+class ExplainedVariance(BaseScoreType):
+    def __init__(self, name='explained_variance', precision=2):
+        self.name = name
+        self.precision = precision
+
+    def __call__(self, y_true, y_pred):
+        score = explained_variance_score(y_true, y_pred)
+        return score
 
 score_types = [
        rw.score_types.RMSE(),
-       R2()
+       R2(),
+       ExplainedVariance()
 ]
 
 # -----------------------------------------------------------------------------

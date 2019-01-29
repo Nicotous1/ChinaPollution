@@ -30,5 +30,4 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
         for column in COLUMNS_CYCLIC:
             X_df['cos_{}'.format(column)] = np.cos(X_df[column] * 2 * np.pi / X_df[column].max())
             X_df['sin_{}'.format(column)] = np.sin(X_df[column] * 2 * np.pi / X_df[column].max())
-        X_df.drop(COLUMNS_CYCLIC, inplace=True, axis=1)
         return X_df
