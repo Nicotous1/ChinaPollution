@@ -1,5 +1,0 @@
-numpy
-pandas>=0.23
-scikit-learn>=0.20
-matplotlib
-git+https://github.com/paris-saclay-cds/ramp-workflow.git
