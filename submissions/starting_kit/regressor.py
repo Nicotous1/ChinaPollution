@@ -1,15 +1,13 @@
 from sklearn.base import BaseEstimator
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
-from sklearn.linear_model import RidgeCV
+from xgboost import XGBRegressor
 from sklearn.metrics import mean_squared_error
 import numpy as np
 
-ALPHAS = [0.1, 0.5, 1, 5, 10, 50]
-
 class Regressor(BaseEstimator):
     def __init__(self):
-        self.reg = make_pipeline(StandardScaler(), RidgeCV(alphas=ALPHAS))
+        self.reg = make_pipeline(StandardScaler(), XGBRegressor())
 
     def fit(self, X, y):
         self.reg.fit(X, y)

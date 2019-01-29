@@ -1,0 +1,7 @@
+numpy
+matplotlib
+pandas
+jupyter
+git+https://github.com/paris-saclay-cds/ramp-workflow.git
+seaborn
+xgboost
