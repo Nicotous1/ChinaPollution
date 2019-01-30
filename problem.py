@@ -7,7 +7,7 @@ import numpy as np
 from rampwf.score_types.base import BaseScoreType
 
 from sklearn.model_selection import KFold
-from sklearn.metrics import r2_score, explained_variance_score
+from sklearn.metrics import r2_score, explained_variance_score, accuracy_score
 
 problem_title = 'Predicting the pollution of Bejing with the weather'
 
@@ -36,21 +36,46 @@ class R2(BaseScoreType):
 
     def __call__(self, y_true, y_pred):
         score = r2_score(y_true, y_pred)
-        return score
-
-class ExplainedVariance(BaseScoreType):
-    def __init__(self, name='explained_variance', precision=2):
+        return round(score, self.precision)
+    
+    
+class AlertAccuracy(BaseScoreType):
+    """
+        The accuracy of the model for detecting a severe or critic event (pm2.5 above 200)
+        When there is an event and the model predict it.
+    """
+    def __init__(self, name='alert_accuracy', precision=2):
         self.name = name
         self.precision = precision
 
     def __call__(self, y_true, y_pred):
-        score = explained_variance_score(y_true, y_pred)
-        return score
+        y_true = np.array(y_true) >= 200
+        y_pred = np.array(y_pred) >= 200
+        score = accuracy_score(y_true, y_pred)
+        return round(score, self.precision)
+    
+    
+class AlertFN(BaseScoreType):
+    """
+        Gives the amount of event not detected (false negative) for a severe or critic event. (pm2.5 above 200)
+        When there is an event and the model do not predict it.
+    """
+    def __init__(self, name='alert_missed', precision=2):
+        self.name = name
+        self.precision = precision
+
+    def __call__(self, y_true, y_pred):
+        y_true = np.array(y_true) >= 200 # There is an event
+        y_pred = np.array(y_pred) < 200 # Do not predict an event
+        score = sum(y_true & y_pred)/len(y_true)
+        return round(score, self.precision)
+
 
 score_types = [
        rw.score_types.RMSE(),
        R2(),
-       ExplainedVariance()
+       AlertAccuracy(),
+       AlertFN(),
 ]
 
 # -----------------------------------------------------------------------------
