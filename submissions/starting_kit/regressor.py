@@ -7,6 +7,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
 
 class Regressor(BaseEstimator):
+    # Mandatory method
     def __init__(self):
         # We used a Grid search to estimate good hyperparameters for the XGBRegressor
         xgb_regressor = XGBRegressor(max_depth=3, learning_rate=0.1, n_estimators=100, n_jobs=1)
@@ -20,10 +21,12 @@ class Regressor(BaseEstimator):
         grid_search_estimator = GridSearchCV(xgb_regressor, param_grid, scoring='r2', cv=5, verbose=10)
         self.reg_grid_search = make_pipeline(StandardScaler(), grid_search_estimator)
 
+    # Mandatory method
     def fit(self, X, y):
         self.reg.fit(X, y)
         return self
 
+    # Mandatory method
     def predict(self, X):
         # We set the minimum of the predictions to 0 because the level of PM2.5 is a positive number
         return np.maximum(self.reg.predict(X), 0)
