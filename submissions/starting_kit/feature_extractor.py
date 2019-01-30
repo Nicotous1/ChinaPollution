@@ -9,9 +9,11 @@ COLUMNS_CYCLIC = ['month', 'day', 'hour']
 ROLLING_WINDOWS = [4, 15]
 
 class FeatureExtractor(BaseEstimator, TransformerMixin):
+    # Mandatory method
     def fit(self, X_df, y):
         return self
 
+    # Mandatory method
     def transform(self, X_df):
         X_df = pd.get_dummies(X_df, columns=COLUMNS_DUMMY, drop_first=True)
         X_df = self.compute_rolling(X_df)
