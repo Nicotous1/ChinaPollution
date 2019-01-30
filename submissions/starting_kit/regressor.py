@@ -7,7 +7,6 @@ from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
 
 class Regressor(BaseEstimator):
-    # Mandatory method
     def __init__(self):
         # We used a Grid search to estimate good hyperparameters for the XGBRegressor
         xgb_regressor = XGBRegressor(max_depth=3, learning_rate=0.1, n_estimators=100, n_jobs=1)
