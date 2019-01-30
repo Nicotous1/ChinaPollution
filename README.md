@@ -32,7 +32,7 @@ The files [environement.yml](environement.yml) and [requirements.txt](requiremen
 
 ## Starting kit
 
-A first model has been designed in this [folder](./submissions/starting_kit). It is composed of a feature extractor that is performing preprocessing of the data and a regressor that is a Ridge regression.
+A first model has been designed in this [folder](./submissions/starting_kit). It is composed of a feature extractor that is performing preprocessing of the data and a regressor which implements the fit and predict methods.
 
 To test the starting kit:  
 
@@ -42,13 +42,13 @@ $ ramp_test_submission --submission starting_kit
 
 ## Your submission
 
-Add your own submission with the same structure as the starting kit in the folder submissions. Then, test your submission with the command:
+Add your own submission with the same structure as the starting kit in the folder submissions. Your FeatureExtractor and Regressor must implement the mandatory methods and inherit the same classes than the starting kit. Then, test your submission with the command:
 
 ``
 $ ramp_test_submission --submission your_submission
 ``
 
-Your model will be trained with a cross-validation process with 5 folds. On each fold, the Root Mean Squared Error (rmse), the coefficient of determination (r2) and the explained variance will be computed on the different sets.
+Your model will be trained with a cross-validation process with 5 folds. On each fold, some metrics will be computed on the different sets.
 
 ## Help
 
