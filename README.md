@@ -16,7 +16,7 @@ Studies have found a close link between exposure to fine particles and premature
 
 Since PM2.5 is such a public health issue, it would be very convenient to estimate and anticipate its level in the air. Thus, the data provided is composed of weather records measured in different cities in China. The target variable is the level of PM2.5 at the same time and same location.  
 
-This [notebook](./Exploratory-Data-Analysis.ipynb) is an exploratory analysis of the data available for this challenge. Also, there is a more detailled explanation of the problem, the business case and the evaluation.
+This [notebook](./Introduction.ipynb) is an exploratory analysis of the data available for this challenge. Also, there is a more detailled explanation of the problem, the business case and the evaluation.
 
 
 ## Set up
