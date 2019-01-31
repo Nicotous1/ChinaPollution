@@ -16,7 +16,7 @@ Studies have found a close link between exposure to fine particles and premature
 
 Since PM2.5 is such a public health issue, it would be very convenient to estimate and anticipate its level in the air. Thus, the data provided is composed of weather records measured in different cities in China. The target variable is the level of PM2.5 at the same time and same location.  
 
-This [notebook](./Exploratory-Data-Analysis.ipynb) is an exploratory analysis of the data available for this challenge. Also, there is a more detailled explanation of the problem, the business case and the evaluation.
+This [notebook](./Introduction.ipynb) is an exploratory analysis of the data available for this challenge. Also, there is a more detailled explanation of the problem, the business case and the evaluation.
 
 
 ## Set up
@@ -32,7 +32,7 @@ The files [environement.yml](environement.yml) and [requirements.txt](requiremen
 
 ## Starting kit
 
-A first model has been designed in this [folder](./submissions/starting_kit). It is composed of a feature extractor that is performing preprocessing of the data and a regressor that is a Ridge regression.
+A first model has been designed in this [folder](./submissions/starting_kit). It is composed of a feature extractor that is performing preprocessing of the data and a regressor which implements the fit and predict methods.
 
 To test the starting kit:  
 
@@ -42,13 +42,13 @@ $ ramp_test_submission --submission starting_kit
 
 ## Your submission
 
-Add your own submission with the same structure as the starting kit in the folder submissions. Then, test your submission with the command:
+Add your own submission with the same structure as the starting kit in the folder submissions. Your FeatureExtractor and Regressor must implement the mandatory methods and inherit the same classes than the starting kit. Then, test your submission with the command:
 
 ``
 $ ramp_test_submission --submission your_submission
 ``
 
-Your model will be trained with a cross-validation process with 5 folds. On each fold, the Root Mean Squared Error (rmse), the coefficient of determination (r2) and the explained variance will be computed on the different sets.
+Your model will be trained with a cross-validation process with 5 folds. On each fold, some metrics will be computed on the different sets.
 
 ## Help
 

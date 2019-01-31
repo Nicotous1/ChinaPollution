@@ -20,10 +20,12 @@ class Regressor(BaseEstimator):
         grid_search_estimator = GridSearchCV(xgb_regressor, param_grid, scoring='r2', cv=5, verbose=10)
         self.reg_grid_search = make_pipeline(StandardScaler(), grid_search_estimator)
 
+    # Mandatory method
     def fit(self, X, y):
         self.reg.fit(X, y)
         return self
 
+    # Mandatory method
     def predict(self, X):
         # We set the minimum of the predictions to 0 because the level of PM2.5 is a positive number
         return np.maximum(self.reg.predict(X), 0)
