@@ -5,12 +5,9 @@ channels:
 dependencies:
   - numpy
   - scipy
-  - pandas>=0.23
-  - scikit-learn>=0.20
-  - pyarrow
-  - imbalanced-learn
+  - pandas
+  - scikit-learn
   - matplotlib
-  - joblib
   - spyder
   - seaborn
   - xgboost
