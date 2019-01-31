@@ -7,9 +7,11 @@ import numpy as np
 from rampwf.score_types.base import BaseScoreType
 
 from sklearn.model_selection import KFold
-from sklearn.metrics import r2_score, explained_variance_score, accuracy_score
+from sklearn.metrics import r2_score, explained_variance_score, accuracy_score, recall_score, f1_score, roc_auc_score
 
 problem_title = 'Predicting the pollution of Bejing with the weather'
+
+THRESHOLD = 200
 
 # -----------------------------------------------------------------------------
 # Predictions type
@@ -41,41 +43,67 @@ class R2(BaseScoreType):
     
 class AlertAccuracy(BaseScoreType):
     """
-        The accuracy of the model for detecting a severe or critic event (pm2.5 above 200)
-        When there is an event and the model predict it.
+        The accuracy of the model for detecting a severe or critic event (pm2.5 above THRESHOLD)
     """
-    def __init__(self, name='alert_accuracy', precision=2):
+    def __init__(self, name='accuracy', precision=2):
         self.name = name
         self.precision = precision
 
     def __call__(self, y_true, y_pred):
-        y_true = np.array(y_true) >= 200
-        y_pred = np.array(y_pred) >= 200
+        y_true = np.array(y_true) >= THRESHOLD
+        y_pred = np.array(y_pred) >= THRESHOLD
         score = accuracy_score(y_true, y_pred)
         return round(score, self.precision)
     
-    
-class AlertFN(BaseScoreType):
+class AlertRecall(BaseScoreType):
     """
-        Gives the amount of event not detected (false negative) for a severe or critic event. (pm2.5 above 200)
-        When there is an event and the model do not predict it.
+        The recall of the model for detecting a severe or critic event (pm2.5 above THRESHOLD)
     """
-    def __init__(self, name='alert_missed', precision=2):
+    def __init__(self, name='recall', precision=2):
         self.name = name
         self.precision = precision
 
     def __call__(self, y_true, y_pred):
-        y_true = np.array(y_true) >= 200 # There is an event
-        y_pred = np.array(y_pred) < 200 # Do not predict an event
-        score = sum(y_true & y_pred)/len(y_true)
+        y_true = np.array(y_true) >= THRESHOLD
+        y_pred = np.array(y_pred) >= THRESHOLD
+        score = recall_score(y_true, y_pred)
         return round(score, self.precision)
 
+class AlertF1(BaseScoreType):
+    """
+        The F1 score of the model for detecting a severe or critic event (pm2.5 above THRESHOLD)
+    """
+    def __init__(self, name='f1', precision=2):
+        self.name = name
+        self.precision = precision
+
+    def __call__(self, y_true, y_pred):
+        y_true = np.array(y_true) >= THRESHOLD
+        y_pred = np.array(y_pred) >= THRESHOLD
+        score = f1_score(y_true, y_pred)
+        return round(score, self.precision)
+
+class AlertAUC(BaseScoreType):
+    """
+        The AUC score of the model for detecting a severe or critic event. There is an alert when the true level of pm2.5 is above THRESHOLD. 
+    """
+    def __init__(self, name='auc', precision=2):
+        self.name = name
+        self.precision = precision
+
+    def __call__(self, y_true, y_pred):
+        y_true = np.array(y_true) >= THRESHOLD
+        y_pred = y_pred / np.array(y_pred).max()
+        score = roc_auc_score(y_true, y_pred)
+        return round(score, self.precision)
 
 score_types = [
-       rw.score_types.RMSE(),
-       R2(),
-       AlertAccuracy(),
-       AlertFN(),
+    AlertAUC(),
+    AlertAccuracy(),
+    AlertRecall(),
+    AlertF1(),
+    rw.score_types.RMSE(),
+    R2(),
 ]
 
 # -----------------------------------------------------------------------------
