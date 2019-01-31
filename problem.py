@@ -98,10 +98,10 @@ class AlertAUC(BaseScoreType):
         return round(score, self.precision)
 
 score_types = [
-    AlertAUC(),
+    AlertF1(),
     AlertAccuracy(),
     AlertRecall(),
-    AlertF1(),
+    AlertAUC(),
     rw.score_types.RMSE(),
     R2(),
 ]
